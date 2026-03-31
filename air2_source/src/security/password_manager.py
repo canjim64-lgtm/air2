@@ -1,6 +1,6 @@
 """
 Minimal Password Manager
-Requires input, auto-delete after 1 min, no save
+Auto-change on login, 256-char required, no save
 """
 
 import time
@@ -10,35 +10,39 @@ import getpass
 
 
 class PasswordManager:
-    """Minimal password manager - requires input, auto-delete, no save"""
+    """Minimal password manager - auto-change, 256-char, no save"""
     
     def __init__(self):
         self.displayed_passwords = {}
         self.lock = threading.Lock()
+        self.current_password = None
         self._cleanup_thread = threading.Thread(target=self._cleanup, daemon=True)
         self._cleanup_thread.start()
     
-    def input_password(self, prompt: str = "Enter password: ") -> str:
-        """Input password (hidden)"""
-        return getpass.getpass(prompt)
+    def generate_256_char_password(self) -> str:
+        """Generate 256-character password"""
+        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:,.<>?"
+        return ''.join(secrets.choice(alphabet) for _ in range(256))
     
-    def input_new_password(self) -> str:
-        """Input new password with confirmation"""
-        p1 = getpass.getpass("Enter new password: ")
-        p2 = getpass.getpass("Confirm password: ")
+    def auto_change_on_login(self) -> str:
+        """Generate new 256-char password on each login"""
+        new_password = self.generate_256_char_password()
         
-        if p1 != p2:
-            raise ValueError("Passwords don't match")
+        # Auto-delete old password
+        if self.current_password:
+            with self.lock:
+                self.displayed_passwords.pop(self.current_password, None)
         
-        if len(p1) < 6:
-            raise ValueError("Password must be at least 6 characters")
+        # Set new password
+        self.current_password = new_password
         
-        return p1
-    
-    def generate_password(self, length: int = 12) -> str:
-        """Generate random password"""
-        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*"
-        return ''.join(secrets.choice(alphabet) for _ in range(length))
+        # Display for 1 minute
+        expiry = time.time() + 60
+        with self.lock:
+            self.displayed_passwords[new_password] = expiry
+        
+        print(f"NEW PASSWORD (valid 60s, 256 chars): {new_password}")
+        return new_password
     
     def display_password(self, password: str, display_seconds: int = 60):
         """Display password for limited time only"""
@@ -47,18 +51,18 @@ class PasswordManager:
         with self.lock:
             self.displayed_passwords[password] = expiry
         
-        print(f"Password (valid for {display_seconds}s): {password}")
+        print(f"Password (valid {display_seconds}s): {password}")
         return password
     
-    def get_password(self, password: str) -> str:
-        """Get password if not expired"""
+    def verify_password(self, password: str) -> bool:
+        """Verify password - auto-expires after 1 min"""
         with self.lock:
             if password in self.displayed_passwords:
                 if time.time() < self.displayed_passwords[password]:
-                    return password
+                    return True
                 else:
                     del self.displayed_passwords[password]
-        return None
+        return False
     
     def _cleanup(self):
         """Clean up expired passwords"""
@@ -71,14 +75,15 @@ class PasswordManager:
                     del self.displayed_passwords[p]
     
     def clear_all(self):
-        """Clear all displayed passwords"""
+        """Clear all passwords"""
         with self.lock:
             self.displayed_passwords.clear()
+            self.current_password = None
 
 
 if __name__ == "__main__":
     pm = PasswordManager()
     
-    # Input password
-    pwd = pm.input_new_password()
-    pm.display_password(pwd, 60)
+    # Auto-generate new 256-char password on login
+    new_pwd = pm.auto_change_on_login()
+    print(f"\nPassword length: {len(new_pwd)} chars")
