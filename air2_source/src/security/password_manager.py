@@ -1,21 +1,39 @@
 """
-Minimal Password Manager - Auto-delete, 1-min display only, no save
-No password history, no storage - just display for 1 minute
+Minimal Password Manager
+Requires input, auto-delete after 1 min, no save
 """
 
 import time
 import secrets
 import threading
+import getpass
 
 
 class PasswordManager:
-    """Minimal password manager - display only, no save"""
+    """Minimal password manager - requires input, auto-delete, no save"""
     
     def __init__(self):
-        self.displayed_passwords = {}  # {password: expiry_time}
+        self.displayed_passwords = {}
         self.lock = threading.Lock()
         self._cleanup_thread = threading.Thread(target=self._cleanup, daemon=True)
         self._cleanup_thread.start()
+    
+    def input_password(self, prompt: str = "Enter password: ") -> str:
+        """Input password (hidden)"""
+        return getpass.getpass(prompt)
+    
+    def input_new_password(self) -> str:
+        """Input new password with confirmation"""
+        p1 = getpass.getpass("Enter new password: ")
+        p2 = getpass.getpass("Confirm password: ")
+        
+        if p1 != p2:
+            raise ValueError("Passwords don't match")
+        
+        if len(p1) < 6:
+            raise ValueError("Password must be at least 6 characters")
+        
+        return p1
     
     def generate_password(self, length: int = 12) -> str:
         """Generate random password"""
@@ -23,13 +41,13 @@ class PasswordManager:
         return ''.join(secrets.choice(alphabet) for _ in range(length))
     
     def display_password(self, password: str, display_seconds: int = 60):
-        """Display password for limited time"""
+        """Display password for limited time only"""
         expiry = time.time() + display_seconds
         
         with self.lock:
-            # Auto-delete after display time
             self.displayed_passwords[password] = expiry
         
+        print(f"Password (valid for {display_seconds}s): {password}")
         return password
     
     def get_password(self, password: str) -> str:
@@ -39,7 +57,6 @@ class PasswordManager:
                 if time.time() < self.displayed_passwords[password]:
                     return password
                 else:
-                    # Auto-delete expired
                     del self.displayed_passwords[password]
         return None
     
@@ -59,10 +76,9 @@ class PasswordManager:
             self.displayed_passwords.clear()
 
 
-# Example
 if __name__ == "__main__":
     pm = PasswordManager()
-    pwd = pm.generate_password()
-    pm.display_password(pwd, 60)  # Show for 60 seconds
-    print(f"Password displayed: {pwd}")
-    print("Will auto-delete in 60 seconds")
+    
+    # Input password
+    pwd = pm.input_new_password()
+    pm.display_password(pwd, 60)
