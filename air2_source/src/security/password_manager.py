@@ -22,8 +22,9 @@ class AuthManager:
         self._cleanup_thread.start()
     
     def generate_256_char_password(self) -> str:
-        """Generate 256-character password"""
-        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:,.<>?"
+        """Generate 256-character completely random password"""
+        # Full printable characters - no words, just random
+        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{}|;:,.<>?/\\~`"
         return ''.join(secrets.choice(alphabet) for _ in range(256))
     
     def auto_change_on_login(self) -> str:
