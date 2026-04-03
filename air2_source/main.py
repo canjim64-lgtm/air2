@@ -114,20 +114,7 @@ def run_mode(choice):
     return 0
 
 def main():
-    # Check command line args FIRST (non-interactive)
-    if len(sys.argv) > 1:
-        arg = sys.argv[1].lower()
-        if arg in ['install', '--install', '-i']:
-            return do_install()
-        if arg in ['uninstall', '--uninstall', '-u']:
-            return do_uninstall()
-        if arg in ['help', '--help', '-h']:
-            print("Usage: python main.py [install|uninstall|<mode>]")
-            print("  install, -i     Install dependencies")
-            print("  uninstall, -u   Uninstall and clean up")
-            print("  1-13           Launch specific mode")
-            return 0
-    
+    # Print menu
     print("""
 ================================================================================
                     AirOne Professional v4.0
@@ -141,11 +128,19 @@ def main():
  [6] System [7] Telemetry [8] Ground [9] AI    [10] Security
  [11] Quantum [12] Cosmic [13] Pipeline
 ================================================================================
-Choice: """, end="")
+""")
     
-    choice = input().strip().lower()
+    # Get choice from args or stdin
+    choice = ""
+    if len(sys.argv) > 1:
+        choice = sys.argv[1].lower()
+    elif not sys.stdin.isatty():
+        choice = input().strip().lower()
+    else:
+        choice = input("Choice: ").strip().lower()
     
-    if choice in ['i', 'install']:
+    # Handle choice
+    if choice in ['i', 'install', '1']:
         return do_install()
     if choice in ['u', 'uninstall']:
         return do_uninstall()
@@ -153,7 +148,12 @@ Choice: """, end="")
         print("Goodbye!")
         return 0
     
-    return run_mode(choice)
+    # Try as mode number
+    if choice.isdigit() and 1 <= int(choice) <= 13:
+        return run_mode(choice)
+    
+    print(f"Invalid: {choice}")
+    return 1
 
 if __name__ == "__main__":
     sys.exit(main())
