@@ -1,4 +1,9 @@
 @echo off
 cd /d "%~dp0"
-python main.py
+
+if "%1"=="" (
+    python main.py
+) else (
+    python main.py %1
+)
 pause

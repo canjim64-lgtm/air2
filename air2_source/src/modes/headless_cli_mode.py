@@ -103,17 +103,25 @@ class HeadlessCLIMode:
         print("  Prediction: Next 5s altitude +10m.")
         print("")
 if __name__ == "__main__":
-    cli = HeadlessCLIMode()
-    cli.start()
-    while cli.running:
-        cmd = input("> ").strip()
-        if cmd:
-            parts = cmd.split(maxsplit=1)
-            cmd_name, args = parts[0], parts[1] if len(parts) > 1 else ""
-            if cmd_name in cli.commands:
-                cli.commands[cmd_name](args)
-            elif cmd_name == "exit":
-                cli.stop()
-            else:
-                print(f"Unknown: {cmd_name}")
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] in ['--help', '--info', '-h']:
+        print("""
+AirOne Headless CLI Mode
+Usage: python headless_cli_mode.py
+Commands: help, status, exit, telemetry, analyze
+""")
+    else:
+        cli = HeadlessCLIMode()
+        cli.start()
+        while cli.running:
+            cmd = input("> ").strip()
+            if cmd:
+                parts = cmd.split(maxsplit=1)
+                cmd_name, args = parts[0], parts[1] if len(parts) > 1 else ""
+                if cmd_name in cli.commands:
+                    cli.commands[cmd_name](args)
+                elif cmd_name == "exit":
+                    cli.stop()
+                else:
+                    print(f"Unknown: {cmd_name}")
 
