@@ -9,8 +9,7 @@ echo.
 
 cd /d "%~dp0air2_source"
 
-python main_launch.py %*
+python main.py %*
 
 echo.
-echo Press any key to exit...
-pause >nul
+pause
