@@ -28,4 +28,4 @@ secrets/
 Thumbs.db
 
 # Zip output
-AirOne_Professional_v*.zip
+AirOne_Professional_v*.zip*.db
