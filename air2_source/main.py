@@ -37,7 +37,6 @@ pause
 """)
     print("\n✓ Installation complete!")
     print("Run: python main.py")
-    input("\nPress Enter to continue...")
     return 0
 
 def do_uninstall():
