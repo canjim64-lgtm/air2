@@ -15,7 +15,7 @@ if errorlevel 1 (
 )
 
 echo Installing dependencies...
-python -m pip install numpy psutil requests flask pyjwt cryptography pillow -q
+python -m pip install numpy psutil requests flask pyjwt cryptography pillow PyQt5 PyQtWebEngine -q
 
 echo.
 echo ================================================================================

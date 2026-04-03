@@ -104,12 +104,12 @@ def run_mode(choice):
     try:
         with open(full_path, 'r', encoding='utf-8', errors='replace') as f:
             code = compile(f.read(), full_path, 'exec')
-        ns = {'__name__': '__main__', '__file__': full_path}
+        ns = {'__name__': '__main__', '__file__': full_path, '__builtins__': __builtins__}
         exec(code, ns)
         if 'main' in ns:
             ns['main']()
     except Exception as e:
-        print(f"Error: {type(e).__name__}")
+        print(f"Error: {type(e).__name__}: {e}")
     
     return 0
 
@@ -139,8 +139,8 @@ def main():
     else:
         choice = input("Choice: ").strip().lower()
     
-    # Handle choice
-    if choice in ['i', 'install', '1']:
+    # Handle special commands first
+    if choice in ['i', 'install']:
         return do_install()
     if choice in ['u', 'uninstall']:
         return do_uninstall()
@@ -148,7 +148,7 @@ def main():
         print("Goodbye!")
         return 0
     
-    # Try as mode number
+    # Try as mode number (1-13)
     if choice.isdigit() and 1 <= int(choice) <= 13:
         return run_mode(choice)
     
