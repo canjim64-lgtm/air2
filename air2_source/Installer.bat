@@ -15,12 +15,12 @@ if errorlevel 1 (
 )
 
 echo Installing dependencies...
-pip install numpy psutil requests flask torch pyjwt cryptography pillow -q
+python -m pip install numpy psutil requests flask pyjwt cryptography pillow -q
 
 echo.
 echo ================================================================================
 echo                    INSTALLATION COMPLETE
 echo ================================================================================
-echo Run: Launcher.bat
+echo Run: python main.py
 echo.
 pause

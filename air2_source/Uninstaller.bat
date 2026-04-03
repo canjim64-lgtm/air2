@@ -8,10 +8,14 @@ echo.
 set /p CONFIRM="Are you sure? (Y/N): "
 if /i not "%CONFIRM%"=="Y" exit
 
-echo Removing AirOne...
-del /q "%~dp0reports" 2>nul
-del /q "%~dp0logs" 2>nul
-del /q "%~dp0config" 2>nul
+echo Uninstalling AirOne...
+pip uninstall numpy psutil requests flask pyjwt cryptography pillow -y 2>nul
+
+echo Removing shortcuts...
+del /q "%~dp0Launcher.bat" 2>nul
+
+echo Removing reports...
+rmdir /s /q "%~dp0reports" 2>nul
 
 echo.
 echo ================================================================================
