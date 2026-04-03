@@ -105,7 +105,7 @@ class SystemInfo:
         
         return {
             'version': '4.0 Ultimate Unified Edition',
-            'build_date': datetime.utcnow().strftime('%Y-%m-%d'),
+            'build_date': datetime.now(timezone.utc).strftime('%Y-%m-%d'),
             'source_files': len(py_files),
             'mode_files': len(mode_files),
             'directories': directories,
@@ -115,7 +115,7 @@ class SystemInfo:
     def get_all_info(self) -> Dict[str, Any]:
         """Get all system information"""
         return {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'os': self.get_os_info(),
             'hardware': self.get_hardware_info(),
             'packages': self.get_python_packages(),
@@ -243,7 +243,7 @@ class DiagnosticTool:
     def run_all_diagnostics(self) -> Dict[str, Any]:
         """Run all diagnostic checks"""
         return {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'python_version_ok': self.check_python_version(),
             'missing_packages': self.check_required_packages(),
             'directories': self.check_directories(),
@@ -282,19 +282,19 @@ class ReportGenerator:
         
         report = {
             'report_type': 'System Information and Diagnostics',
-            'generated_at': datetime.utcnow().isoformat(),
+            'generated_at': datetime.now(timezone.utc).isoformat(),
             'system_info': info.get_all_info(),
             'diagnostics': diagnostic.run_all_diagnostics(),
             'recommendations': self.generate_recommendations(diagnostic)
         }
         
         # Save report
-        report_file = self.report_dir / f'system_report_{datetime.utcnow().strftime("%Y%m%d_%H%M%S")}.json'
+        report_file = self.report_dir / f'system_report_{datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")}.json'
         with open(report_file, 'w', encoding='utf-8') as f:
             json.dump(report, f, indent=2, default=str)
         
         # Also save as text
-        text_file = self.report_dir / f'system_report_{datetime.utcnow().strftime("%Y%m%d_%H%M%S")}.txt'
+        text_file = self.report_dir / f'system_report_{datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")}.txt'
         with open(text_file, 'w', encoding='utf-8') as f:
             f.write(self.format_report_as_text(report))
         

@@ -6,7 +6,7 @@ Implements comprehensive automation, security, health monitoring, and ML capabil
 import numpy as np
 import pandas as pd
 from typing import Dict, List, Any, Optional, Tuple, Callable
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import threading
 import queue
 import time
@@ -197,8 +197,8 @@ class ZeroTrustSecurityManager:
         payload = {
             'user_id': user_id,
             'permissions': permissions,
-            'exp': datetime.utcnow() + timedelta(minutes=expiry_minutes),
-            'iat': datetime.utcnow(),
+            'exp': datetime.now(timezone.utc) + timedelta(minutes=expiry_minutes),
+            'iat': datetime.now(timezone.utc),
             'jti': secrets.token_hex(16)  # JWT ID for revocation
         }
         return jwt.encode(payload, self.jwt_secret, algorithm='HS256')
@@ -829,7 +829,7 @@ class AutomationController:
     def _run_health_monitoring(self):
         """Run continuous health monitoring"""
         health_data = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'system_status': 'operational',
             'checks_performed': [],
             'issues_found': []
@@ -891,7 +891,7 @@ class AutomationController:
     def _run_data_backup(self):
         """Run data backup operations"""
         backup_result = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'status': 'success',
             'files_backed_up': 0,
             'total_size_bytes': 0,
@@ -906,7 +906,7 @@ class AutomationController:
             # Define backup directory
             base_dir = Path(__file__).parent.parent.parent
             data_dir = base_dir / 'data'
-            backup_dir = base_dir / 'backups' / f'backup_{datetime.utcnow().strftime("%Y%m%d_%H%M%S")}'
+            backup_dir = base_dir / 'backups' / f'backup_{datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")}'
             
             if data_dir.exists():
                 backup_dir.mkdir(parents=True, exist_ok=True)
@@ -935,7 +935,7 @@ class AutomationController:
     def _run_security_scan(self):
         """Run security scanning"""
         scan_result = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'status': 'completed',
             'files_scanned': 0,
             'suspicious_files': [],
@@ -991,7 +991,7 @@ class AutomationController:
     def _run_log_rotation(self):
         """Run log rotation"""
         rotation_result = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'status': 'completed',
             'logs_rotated': 0,
             'logs_archived': 0,
@@ -1054,7 +1054,7 @@ class AutomationController:
     def _run_telemetry_encryption(self):
         """Run telemetry encryption for stored data"""
         encryption_result = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'status': 'completed',
             'files_encrypted': 0,
             'files_decrypted': 0,
@@ -1109,7 +1109,7 @@ class AutomationController:
     def _run_predictive_maintenance(self):
         """Run predictive maintenance analysis"""
         maintenance_result = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'status': 'completed',
             'components_analyzed': 0,
             'maintenance_recommendations': [],

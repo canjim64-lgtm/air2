@@ -73,7 +73,7 @@ class SystemChecker:
             'disk_ok': self.check_disk() >= self.requirements['disk_gb'],
             'packages': self.check_packages(),
             'all_packages_ok': all(self.check_packages().values()),
-            'timestamp': datetime.utcnow().isoformat()
+            'timestamp': datetime.now(timezone.utc).isoformat()
         }
 
 
@@ -90,7 +90,7 @@ class ConfigurationGenerator:
             'system': {
                 'name': 'AirOne Professional',
                 'version': '4.0 Ultimate Unified Edition',
-                'build': datetime.utcnow().strftime('%Y%m%d_%H%M%S'),
+                'build': datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S'),
                 'environment': 'production'
             },
             'security': {
@@ -228,7 +228,7 @@ class StartupManager:
     
     def log(self, message: str):
         """Log startup message"""
-        timestamp = datetime.utcnow().isoformat()
+        timestamp = datetime.now(timezone.utc).isoformat()
         log_entry = f"[{timestamp}] {message}"
         self.startup_log.append(log_entry)
         print(log_entry)
