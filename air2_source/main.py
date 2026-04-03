@@ -101,16 +101,10 @@ def run_mode(choice):
         print(f"Module not found: {rel_path}")
         return 1
     
-    try:
-        with open(full_path, 'r', encoding='utf-8', errors='replace') as f:
-            code = compile(f.read(), full_path, 'exec')
-        ns = {'__name__': '__main__', '__file__': full_path, '__builtins__': __builtins__}
-        exec(code, ns)
-        if 'main' in ns:
-            ns['main']()
-    except Exception as e:
-        print(f"Error: {type(e).__name__}: {e}")
-    
+    # Run module directly
+    import subprocess
+    subprocess.Popen([sys.executable, full_path])
+    print(f"Started: {desc}")
     return 0
 
 def main():
@@ -147,6 +141,14 @@ def main():
     if choice in ['q', 'quit', 'exit']:
         print("Goodbye!")
         return 0
+    
+    # Map names to numbers
+    name_to_num = {'gui': '1', 'cli': '2', 'web': '3', 'api': '4', 
+                  'desktop': '5', 'system': '6', 'telemetry': '7', 
+                  'ground': '8', 'ai': '9', 'security': '10', 
+                  'quantum': '11', 'cosmic': '12', 'pipeline': '13'}
+    if choice in name_to_num:
+        choice = name_to_num[choice]
     
     # Try as mode number (1-13)
     if choice.isdigit() and 1 <= int(choice) <= 13:
