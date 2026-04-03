@@ -1,15 +1,14 @@
 @echo off
-title AirOne Professional v4.0 - Launcher
+title AirOne Professional v4.0
 color 0a
 echo ================================================================================
-echo                 AirOne Professional v4.0 - LAUNCHER
-echo                    Complete System Integration
+echo                    AirOne Professional v4.0
 echo ================================================================================
 echo.
 
-cd /d "%~dp0air2_source"
+cd /d "%~dp0"
 
-python main.py %*
+python main.py
 
 echo.
 pause
