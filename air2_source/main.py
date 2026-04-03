@@ -23,7 +23,7 @@ def run_mode(choice):
         '2': ('CLI', 'cli/cli_dashboard.py'),
         '3': ('Web', 'web/web_dashboard.py'),
         '4': ('API', 'api/api_server.py'),
-        '5': ('Desktop', 'desktop_gui/main.py'),
+        '5': ('Desktop', 'desktop_gui/desktop_gui_mode.py'),
         '6': ('System', 'system/system_info.py'),
         '7': ('Telemetry', 'telemetry/telemetry_dashboard.py'),
         '8': ('Ground Station', 'communications/ground_station.py'),
