@@ -1,0 +1,92 @@
+{
+  "report_type": "System Information and Diagnostics",
+  "generated_at": "2026-04-03T10:46:16.280620+00:00",
+  "system_info": {
+    "timestamp": "2026-04-03T10:46:16.280628+00:00",
+    "os": {
+      "system": "Linux",
+      "release": "6.8.0-1025-gke",
+      "version": "#29-Ubuntu SMP Thu Apr 24 23:22:26 UTC 2025",
+      "machine": "x86_64",
+      "processor": "",
+      "architecture": "64bit",
+      "python_version": "3.13.12",
+      "python_implementation": "CPython"
+    },
+    "hardware": {
+      "error": "Could not gather hardware info"
+    },
+    "packages": {},
+    "airone": {
+      "version": "4.0 Ultimate Unified Edition",
+      "build_date": "2026-04-03",
+      "source_files": 373,
+      "mode_files": 13,
+      "directories": {
+        "src": false,
+        "config": true,
+        "data": true,
+        "logs": true,
+        "passwords": false,
+        "models": false
+      },
+      "base_path": "/workspace/project/air2/air2_source"
+    }
+  },
+  "diagnostics": {
+    "timestamp": "2026-04-03T10:46:16.286915+00:00",
+    "python_version_ok": true,
+    "missing_packages": [
+      "numpy",
+      "pandas",
+      "flask",
+      "cryptography",
+      "PyQt5",
+      "torch",
+      "transformers",
+      "psutil"
+    ],
+    "directories": {
+      "src": true,
+      "config": true,
+      "data": true,
+      "logs": true,
+      "passwords": false
+    },
+    "permissions": {
+      "read": true,
+      "write": true,
+      "execute": true
+    },
+    "network": {
+      "localhost": true,
+      "dns": true,
+      "internet": true
+    },
+    "errors": [],
+    "warnings": [
+      "Missing package: numpy",
+      "Missing package: pandas",
+      "Missing package: flask",
+      "Missing package: cryptography",
+      "Missing package: PyQt5",
+      "Missing package: torch",
+      "Missing package: transformers",
+      "Missing package: psutil",
+      "Missing directory: passwords",
+      "Missing package: numpy",
+      "Missing package: pandas",
+      "Missing package: flask",
+      "Missing package: cryptography",
+      "Missing package: PyQt5",
+      "Missing package: torch",
+      "Missing package: transformers",
+      "Missing package: psutil"
+    ],
+    "health_score": 55
+  },
+  "recommendations": [
+    "WARNING: Address warnings for optimal performance",
+    "Install missing packages: pip install numpy pandas flask cryptography PyQt5 torch transformers psutil"
+  ]
+}
