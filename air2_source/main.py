@@ -13,7 +13,7 @@ def do_install():
     print("\n" + "="*80)
     print("                    AirOne - INSTALLING")
     print("="*80)
-    packages = ['numpy', 'psutil', 'requests', 'flask', 'pyjwt', 'cryptography', 'pillow', 'pandas']
+    packages = ['numpy', 'psutil', 'requests', 'flask', 'pyjwt', 'cryptography', 'pillow', 'pandas', 'PyQt5', 'PyQtWebEngine']
     for pkg in packages:
         try:
             print(f"  Installing {pkg}...", end=" ", flush=True)
@@ -55,6 +55,7 @@ MODES = [
     ('11', 'Quantum', 'src/quantum/quantum_computing.py', 'Quantum'),
     ('12', 'Cosmic', 'src/cosmic/cosmic_ai.py', 'Cosmic AI'),
     ('13', 'Pipeline', 'src/pipeline/data_pipeline.py', 'Data Pipeline'),
+    ('14', 'CanSat', 'src/modes/cansat_comms.py', 'CanSat Comms'),
 ]
 
 def run_mode(choice):
