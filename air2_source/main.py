@@ -87,7 +87,7 @@ def main():
 ================================================================================
     [I] Install    [U] Uninstall    [Q] Quit
 ================================================================================
-    14 Modes: GUI | CLI | Web | API | Desktop | System | Telemetry
+    Ground Station GUI with Login - No Login Required
              Ground Station | AI | Security | Quantum | Cosmic | Pipeline
 ================================================================================
  [1] GUI    [2] CLI    [3] Web    [4] API    [5] Desktop
