@@ -101,17 +101,11 @@ def run_mode(choice):
         print(f"Module not found: {rel_path}")
         return 1
     
-    # Run module directly with piped input if needed
+    # Run module and wait for completion
     import subprocess
-    proc = subprocess.Popen([sys.executable, full_path], 
-                           stdin=subprocess.PIPE, stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE, cwd=SCRIPT_DIR)
-    # Give it a moment then kill - modes print then wait for input
-    import time
-    time.sleep(2)
-    proc.terminate()
+    result = subprocess.run([sys.executable, full_path], cwd=SCRIPT_DIR)
     print(f"Started: {desc}")
-    return 0
+    return result.returncode
 
 def main():
     # Print menu
