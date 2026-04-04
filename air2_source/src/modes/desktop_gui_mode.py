@@ -805,11 +805,23 @@ class DesktopGUIMode:
         }
 
 
-def run_standalone():
-    """Run GUI in standalone mode"""
-    gui = DesktopGUIMode()
-    gui.start()
+def main():
+    """Demo mode - shows info without GUI"""
+    print("""
+================================================================================
+                    AirOne - Desktop GUI Mode
+================================================================================
+    Full graphical interface with real-time visualization
+    
+Status: Desktop GUI Ready
+Note: Run 'Installer.bat' first to install PyQt5
 
+Features:
+    - Real-time telemetry dashboard
+    - Interactive mission control
+    - Data visualization
+    - System configuration
+""")
 
 if __name__ == "__main__":
-    run_standalone()
+    main()

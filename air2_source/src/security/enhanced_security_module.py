@@ -701,3 +701,24 @@ if __name__ == "__main__":
         print(f"Security error: {str(e)}")
     
     print("Security system test completed")
+
+
+def main():
+    """Demo mode"""
+    try:
+        import jwt
+        print("Security module loaded - run Installer.bat for full features")
+    except ImportError:
+        print("""
+================================================================================
+                    AirOne - Security Module
+================================================================================
+    JWT support not installed.
+    Run: pip install pyjwt cryptography
+    
+Status: Security Ready (limited)
+""")
+
+
+if __name__ == "__main__":
+    main()
