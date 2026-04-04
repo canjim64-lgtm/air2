@@ -61,6 +61,7 @@ class LoginWindow(QDialog):
         # Username
         layout.addWidget(QLabel("Username:"))
         self.username = QLineEdit()
+        self.username.setStyleSheet("QLineEdit { background: #ffffff; color: #333333; border: 2px solid #3498db; padding: 8px; font-size: 14px; border-radius: 4px; }")
         self.username.setPlaceholderText("Enter username")
         layout.addWidget(self.username)
         
@@ -68,6 +69,7 @@ class LoginWindow(QDialog):
         layout.addWidget(QLabel("Password:"))
         self.password = QLineEdit()
         self.password.setEchoMode(QLineEdit.Password)
+        self.password.setStyleSheet("QLineEdit { background: #ffffff; color: #333333; border: 2px solid #3498db; padding: 8px; font-size: 14px; border-radius: 4px; }")
         self.password.setPlaceholderText("Enter password")
         layout.addWidget(self.password)
         

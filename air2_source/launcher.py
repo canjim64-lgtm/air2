@@ -45,7 +45,7 @@ def print_banner():
 ║                         LAUNCHER                                         ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
 {END}
-   {YELLOW}Ground Station GUI with Login - No Login Required{END}
+   {YELLOW}Ground Station GUI - Login Required{END}
             Ground Station | AI | Security | Quantum | Cosmic | Pipeline
 """)
 
