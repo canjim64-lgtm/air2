@@ -101,15 +101,12 @@ def run_mode(choice):
         print(f"Module not found: {rel_path}")
         return 1
     
-    # Run module and capture output
+    # Run module - let user interact directly
     import subprocess
-    result = subprocess.run([sys.executable, full_path], cwd=SCRIPT_DIR, capture_output=True, text=True)
-    if result.stdout:
-        print(result.stdout)
-    if result.stderr:
-        print(result.stderr, file=sys.stderr)
+    os.chdir(SCRIPT_DIR)
+    subprocess.run([sys.executable, full_path])
     print(f"Started: {desc}")
-    return result.returncode
+    return 0
 
 def main():
     # Print menu
