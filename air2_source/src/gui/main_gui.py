@@ -641,13 +641,52 @@ AirOne Professional v4.0
         return tab
     
     def start_simulation(self):
-        """Start CanSat simulation"""
+        """Start CanSat simulation - 3 min flight, 300m apogee, max 500m"""
         if self.flight_count < self.max_flights:
             self.sim_display.setPlainText(f"Error: Need {self.max_flights} flights first!")
             return
+
+        self.sim_display.setPlainText("Starting CanSat simulation...")
+        self.sim_display.append("=" * 40)
+        self.sim_display.append("Simulating 3-minute flight")
+        self.sim_display.append("Target apogee: 300m")
+        self.sim_display.append("Max altitude: 500m")
+        self.sim_display.append("=" * 40)
         
-        self.sim_display.setPlainText("Starting simulation...")  # Simulation logic would go here
-    
+        SIM_DURATION = 180
+        APOGEE = 300
+        MAX_ALT = 500
+        
+        import random
+        self.sim_display.append("Time(s)   Alt(m)    Temp(C)   Pressure  Status")
+        
+        for t in range(0, SIM_DURATION + 1, 5):
+            if t < 30:
+                altitude = int(APOGEE * (t / 30))
+            elif t < 60:
+                altitude = int(APOGEE - (APOGEE - 50) * ((t - 30) / 30))
+            elif t < 120:
+                altitude = int(50 + 100 * ((t - 60) / 60))
+            else:
+                altitude = max(0, int(150 - 5 * ((t - 120) / 60)))
+            altitude = min(altitude, MAX_ALT)
+            temp = round(20 - (altitude / 100) * 2 + random.uniform(-1, 1), 1)
+            pressure = round(1013 - (altitude / 10) * 1 + random.uniform(-0.5, 0.5), 1)
+            if t < 30:
+                status = "ASCENT"
+            elif t < 60:
+                status = "DESCENT"
+            elif t < 120:
+                status = "PARACHUTE"
+            else:
+                status = "GROUND"
+            self.sim_display.append(f"{t:<9} {altitude:<9} {temp:<9} {pressure:<9} {status}")
+        
+        self.sim_display.append("=" * 40)
+        self.sim_display.append("SIMULATION COMPLETE")
+        self.sim_display.append(f"Apogee: {APOGEE}m, Duration: {SIM_DURATION}s (3 min)")
+        self.sim_display.append("=" * 40)
+
     def increment_flight_count(self):
         """Increment flight count after CanSat flight"""
         if self.flight_count < self.max_flights:
