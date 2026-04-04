@@ -13,7 +13,7 @@ def do_install():
     print("\n" + "="*80)
     print("                    AirOne - INSTALLING")
     print("="*80)
-    packages = ['numpy', 'psutil', 'requests', 'flask', 'pyjwt', 'cryptography', 'pillow', 'pandas', 'PyQt5', 'PyQtWebEngine']
+    packages = ['numpy', 'psutil', 'requests', 'flask', 'pyjwt', 'cryptography', 'pillow', 'pandas', 'PyQt5', 'PyQtWebEngine', 'pyserial', 'matplotlib']
     for pkg in packages:
         try:
             print(f"  Installing {pkg}...", end=" ", flush=True)
@@ -87,12 +87,12 @@ def main():
 ================================================================================
     [I] Install    [U] Uninstall    [Q] Quit
 ================================================================================
-    13 Modes: GUI | CLI | Web | API | Desktop | System | Telemetry
+    14 Modes: GUI | CLI | Web | API | Desktop | System | Telemetry
              Ground Station | AI | Security | Quantum | Cosmic | Pipeline
 ================================================================================
  [1] GUI    [2] CLI    [3] Web    [4] API    [5] Desktop
  [6] System [7] Telemetry [8] Ground [9] AI    [10] Security
- [11] Quantum [12] Cosmic [13] Pipeline
+ [11] Quantum [12] Cosmic [13] Pipeline [14] CanSat
 ================================================================================
 """)
         choice = input("Choice: ").strip().lower()
