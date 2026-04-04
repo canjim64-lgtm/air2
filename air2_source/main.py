@@ -13,7 +13,7 @@ def do_install():
     print("\n" + "="*80)
     print("                    AirOne - INSTALLING")
     print("="*80)
-    packages = ['numpy', 'psutil', 'requests', 'flask', 'pyjwt', 'cryptography', 'pillow', 'pandas', 'PyQt5', 'PyQtWebEngine', 'pyserial', 'matplotlib']
+    packages = ['numpy', 'psutil', 'requests', 'flask', 'pyjwt', 'cryptography', 'pillow', 'pandas', 'PyQt5', 'PyQtWebEngine', 'pyserial', 'matplotlib', 'pyqtgraph']
     for pkg in packages:
         try:
             print(f"  Installing {pkg}...", end=" ", flush=True)
