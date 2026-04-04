@@ -474,6 +474,75 @@ AirOne Professional v4.0
         widget = QWidget()
         layout = QVBoxLayout()
         
+        # Filter controls
+        filter_group = QGroupBox("🔍 Data Filters")
+        filter_layout = QGridLayout()
+        
+        # Search filter
+        filter_layout.addWidget(QLabel("Search:"), 0, 0)
+        self.search_box = QLineEdit()
+        self.search_box.setPlaceholderText("Search data...")
+        self.search_box.textChanged.connect(self.apply_filters)
+        filter_layout.addWidget(self.search_box, 0, 1, 1, 2)
+        
+        # Altitude range
+        filter_layout.addWidget(QLabel("Altitude:"), 1, 0)
+        self.alt_min = QSpinBox()
+        self.alt_min.setRange(0, 10000)
+        self.alt_min.setValue(0)
+        self.alt_min.valueChanged.connect(self.apply_filters)
+        filter_layout.addWidget(self.alt_min, 1, 1)
+        self.alt_max = QSpinBox()
+        self.alt_max.setRange(0, 10000)
+        self.alt_max.setValue(10000)
+        self.alt_max.valueChanged.connect(self.apply_filters)
+        filter_layout.addWidget(QLabel("to"), 1, 2)
+        filter_layout.addWidget(self.alt_max, 1, 3)
+        
+        # Temperature range
+        filter_layout.addWidget(QLabel("Temp °C:"), 2, 0)
+        self.temp_min = QSpinBox()
+        self.temp_min.setRange(-50, 100)
+        self.temp_min.setValue(-50)
+        self.temp_min.valueChanged.connect(self.apply_filters)
+        filter_layout.addWidget(self.temp_min, 2, 1)
+        self.temp_max = QSpinBox()
+        self.temp_max.setRange(-50, 100)
+        self.temp_max.setValue(100)
+        self.temp_max.valueChanged.connect(self.apply_filters)
+        filter_layout.addWidget(QLabel("to"), 2, 2)
+        filter_layout.addWidget(self.temp_max, 2, 3)
+        
+        # Pressure range
+        filter_layout.addWidget(QLabel("Pressure:"), 3, 0)
+        self.press_min = QSpinBox()
+        self.press_min.setRange(0, 2000)
+        self.press_min.setValue(0)
+        self.press_min.valueChanged.connect(self.apply_filters)
+        filter_layout.addWidget(self.press_min, 3, 1)
+        self.press_max = QSpinBox()
+        self.press_max.setRange(0, 2000)
+        self.press_max.setValue(2000)
+        self.press_max.valueChanged.connect(self.apply_filters)
+        filter_layout.addWidget(QLabel("to"), 3, 2)
+        filter_layout.addWidget(self.press_max, 3, 3)
+        
+        # Status filter
+        filter_layout.addWidget(QLabel("Status:"), 4, 0)
+        self.status_filter = QComboBox()
+        self.status_filter.addItems(["All", "ASCENT", "DESCENT", "PARACHUTE", "GROUND"])
+        self.status_filter.currentTextChanged.connect(self.apply_filters)
+        filter_layout.addWidget(self.status_filter, 4, 1, 1, 2)
+        
+        # Clear filter button
+        clear_btn = QPushButton("Clear Filters")
+        clear_btn.setStyleSheet("background-color: #e74c3c; color: white; padding: 5px;")
+        clear_btn.clicked.connect(self.clear_filters)
+        filter_layout.addWidget(clear_btn, 4, 3)
+        
+        filter_group.setLayout(filter_layout)
+        layout.addWidget(filter_group)
+
         controls = QHBoxLayout()
         controls.addWidget(QLabel("📊 Data Analysis & Export"))
         controls.addStretch()
@@ -489,21 +558,90 @@ AirOne Professional v4.0
         layout.addLayout(controls)
         
         # Data table
-        self.data_table_widget = QTableWidget(30, 6)
-        self.data_table_widget.setHorizontalHeaderLabels(["Time", "Altitude", "Temp", "Pressure", "Humidity", "Battery"])
+        self.data_table_widget = QTableWidget(30, 7)
+        self.data_table_widget.setHorizontalHeaderLabels(["Time", "Altitude", "Temp", "Pressure", "Humidity", "Battery", "Status"])
         
+        # Generate sample data with status
+        self.flight_data = []
         for i in range(30):
-            self.data_table_widget.setItem(i, 0, QTableWidgetItem(f"{i:02d}:00"))
-            self.data_table_widget.setItem(i, 1, QTableWidgetItem(str(random.randint(100, 5000))))
-            self.data_table_widget.setItem(i, 2, QTableWidgetItem(str(random.randint(-10, 35))))
-            self.data_table_widget.setItem(i, 3, QTableWidgetItem(str(random.randint(900, 1100))))
-            self.data_table_widget.setItem(i, 4, QTableWidgetItem(str(random.randint(30, 80))))
-            self.data_table_widget.setItem(i, 5, QTableWidgetItem(str(random.randint(60, 100))))
+            alt = random.randint(0, 500)
+            if alt < 50:
+                status = "GROUND"
+            elif alt < 150:
+                status = "PARACHUTE"
+            elif alt < 300:
+                status = "DESCENT"
+            else:
+                status = "ASCENT"
+            row_data = [
+                f"{i:02d}:00",
+                str(alt),
+                str(random.randint(-10, 35)),
+                str(random.randint(900, 1100)),
+                str(random.randint(30, 80)),
+                str(random.randint(60, 100)),
+                status
+            ]
+            self.flight_data.append(row_data)
+            for j, val in enumerate(row_data):
+                self.data_table_widget.setItem(i, j, QTableWidgetItem(val))
         
         layout.addWidget(self.data_table_widget)
         
+        # Filtered count label
+        self.filter_count = QLabel("Showing: 30/30 records")
+        self.filter_count.setStyleSheet("color: #7f8c8d; font-size: 12px;")
+        layout.addWidget(self.filter_count)
+        
         widget.setLayout(layout)
         return widget
+    
+    def apply_filters(self):
+        """Apply filters to data table"""
+        search = self.search_box.text().lower()
+        alt_min = self.alt_min.value()
+        alt_max = self.alt_max.value()
+        temp_min = self.temp_min.value()
+        temp_max = self.temp_max.value()
+        press_min = self.press_min.value()
+        press_max = self.press_max.value()
+        status = self.status_filter.currentText()
+        
+        visible_count = 0
+        for i, row in enumerate(self.flight_data):
+            if search and search not in "".join(row).lower():
+                self.data_table_widget.setRowHidden(i, True)
+                continue
+            if not (alt_min <= int(row[1]) <= alt_max):
+                self.data_table_widget.setRowHidden(i, True)
+                continue
+            if not (temp_min <= int(row[2]) <= temp_max):
+                self.data_table_widget.setRowHidden(i, True)
+                continue
+            if not (press_min <= int(row[3]) <= press_max):
+                self.data_table_widget.setRowHidden(i, True)
+                continue
+            if status != "All" and row[6] != status:
+                self.data_table_widget.setRowHidden(i, True)
+                continue
+            self.data_table_widget.setRowHidden(i, False)
+            visible_count += 1
+        
+        self.filter_count.setText(f"Showing: {visible_count}/{len(self.flight_data)} records")
+    
+    def clear_filters(self):
+        """Clear all filters"""
+        self.search_box.clear()
+        self.alt_min.setValue(0)
+        self.alt_max.setValue(10000)
+        self.temp_min.setValue(-50)
+        self.temp_max.setValue(100)
+        self.press_min.setValue(0)
+        self.press_max.setValue(2000)
+        self.status_filter.setCurrentText("All")
+        for i in range(self.data_table_widget.rowCount()):
+            self.data_table_widget.setRowHidden(i, False)
+        self.filter_count.setText(f"Showing: {len(self.flight_data)}/{len(self.flight_data)} records")
     
     def export_csv(self):
         fname, _ = QFileDialog.getSaveFileName(self, "Export CSV", "data.csv")
