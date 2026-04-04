@@ -173,6 +173,7 @@ class AirOneMainWindow(QMainWindow):
         self.tabs.addTab(self.create_data_tab(), "💾 Data")
         self.tabs.addTab(self.create_security_tab(), "🔐 Security")
         self.tabs.addTab(self.create_settings_tab(), "⚙️ Settings")
+        self.tabs.addTab(self.create_simulation_tab(), "🎮 Simulation")
         
         main_layout.addWidget(self.tabs)
         
@@ -407,6 +408,11 @@ AirOne Professional v4.0
                 values = [parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], "OK"]
                 for i, v in enumerate(values):
                     self.data_table.setItem(i, 1, QTableWidgetItem(v))
+                
+                # Count as a flight session (only once per connection)
+                if not hasattr(self, '_flight_counted'):
+                    self._flight_counted = True
+                    self.increment_flight_count()
         except:
             pass
     
@@ -562,7 +568,101 @@ AirOne Professional v4.0
         self.close()
     
     # ==================== SETTINGS TAB ====================
-    def create_settings_tab(self):
+    
+    def create_simulation_tab(self):
+        """Create Simulation tab - requires 5 CanSat flights first"""
+        tab = QWidget()
+        layout = QVBoxLayout()
+        
+        # Header
+        header = QLabel("🎮 Flight Simulation")
+        header.setStyleSheet("font-size: 24px; font-weight: bold; color: #9b59b6;")
+        layout.addWidget(header)
+        
+        # Flight requirement status
+        status_group = QGroupBox("Flight Requirement Status")
+        status_layout = QVBoxLayout()
+        
+        self.flight_count_label = QLabel(f"Flights completed: {self.flight_count}/{self.max_flights}")
+        self.flight_count_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #3498db;")
+        status_layout.addWidget(self.flight_count_label)
+        
+        self.sim_status_label = QLabel("❌ Simulation locked")
+        self.sim_status_label.setStyleSheet("font-size: 14px; color: #e74c3c;")
+        status_layout.addWidget(self.sim_status_label)
+        
+        status_group.setLayout(status_layout)
+        layout.addWidget(status_group)
+        
+        # Simulation controls
+        control_group = QGroupBox("Simulation Controls")
+        control_layout = QHBoxLayout()
+        
+        self.sim_start_btn = QPushButton("▶ Start Simulation")
+        self.sim_start_btn.setStyleSheet("background-color: #9b59b6; color: white; padding: 10px; font-weight: bold;")
+        self.sim_start_btn.setEnabled(False)  # Disabled until 5 flights
+        self.sim_start_btn.clicked.connect(self.start_simulation)
+        control_layout.addWidget(self.sim_start_btn)
+        
+        self.sim_stop_btn = QPushButton("⏹ Stop")
+        self.sim_stop_btn.setStyleSheet("background-color: #e74c3c; color: white; padding: 10px;")
+        self.sim_stop_btn.setEnabled(False)
+        control_layout.addWidget(self.sim_stop_btn)
+        
+        control_layout.addStretch()
+        control_group.setLayout(control_layout)
+        layout.addWidget(control_group)
+        
+        # Simulation display
+        self.sim_display = QTextEdit()
+        self.sim_display.setReadOnly(True)
+        self.sim_display.setStyleSheet("background-color: #1a1a2e; color: #00ff88; font-family: monospace; font-size: 14px;")
+        self.sim_display.setPlainText("Waiting for simulation...\n\nComplete 5 CanSat flights to unlock simulation.")
+        layout.addWidget(self.sim_display)
+        
+        # AI Simulation section
+        ai_group = QGroupBox("AI Simulation")
+        ai_layout = QVBoxLayout()
+        
+        self.ai_sim_btn = QPushButton("🤖 AI Flight Prediction")
+        self.ai_sim_btn.setStyleSheet("background-color: #3498db; color: white; padding: 10px; font-weight: bold;")
+        self.ai_sim_btn.setEnabled(False)  # Disabled until 5 flights
+        ai_layout.addWidget(self.ai_sim_btn)
+        
+        self.ai_status = QLabel("AI simulation requires 5 flights")
+        self.ai_status.setStyleSheet("color: #7f8c8d;")
+        ai_layout.addWidget(self.ai_status)
+        
+        ai_group.setLayout(ai_layout)
+        layout.addWidget(ai_group)
+        
+        layout.addStretch()
+        tab.setLayout(layout)
+        return tab
+    
+    def start_simulation(self):
+        """Start CanSat simulation"""
+        if self.flight_count < self.max_flights:
+            self.sim_display.setPlainText(f"Error: Need {self.max_flights} flights first!")
+            return
+        
+        self.sim_display.setPlainText("Starting simulation...")  # Simulation logic would go here
+    
+    def increment_flight_count(self):
+        """Increment flight count after CanSat flight"""
+        if self.flight_count < self.max_flights:
+            self.flight_count += 1
+            self.flight_count_label.setText(f"Flights completed: {self.flight_count}/{self.max_flights}")
+            
+            if self.flight_count >= self.max_flights:
+                self.sim_status_label.setText("✅ Simulation unlocked!")
+                self.sim_status_label.setStyleSheet("font-size: 14px; color: #27ae60; font-weight: bold;")
+                self.sim_start_btn.setEnabled(True)
+                self.ai_sim_btn.setEnabled(True)
+                self.ai_status.setText("✅ AI simulation ready")
+                self.ai_status.setStyleSheet("color: #27ae60;")
+
+def create_settings_tab(self):
         widget = QWidget()
         layout = QVBoxLayout()
         
