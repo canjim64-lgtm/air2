@@ -9,6 +9,18 @@ import subprocess
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# Create required directories on startup
+def setup_directories():
+    """Create required directories if they don't exist"""
+    required_dirs = ['logs', 'reports', 'data', 'config']
+    for dirname in required_dirs:
+        dirpath = os.path.join(SCRIPT_DIR, dirname)
+        if not os.path.exists(dirpath):
+            os.makedirs(dirpath, exist_ok=True)
+
+# Run directory setup on import
+setup_directories()
+
 def do_install():
     print("\n" + "="*80)
     print("                    AirOne - INSTALLING")

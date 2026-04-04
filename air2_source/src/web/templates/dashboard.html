@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirOne Professional - Ground Station Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛸</text></svg>">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">🚀</div>
+                <div class="brand-text">
+                    <h1>AirOne</h1>
+                    <span>Professional v4.0</span>
+                </div>
+            </div>
+            
+            <nav class="nav-section">
+                <div class="nav-label">Main</div>
+                <a class="nav-item active" href="#">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                    <span class="status-dot"></span>
+                </a>
+                <a class="nav-item" href="#">
+                    <span class="nav-icon">🛰️</span>
+                    <span class="nav-text">Ground Station</span>
+                </a>
+                <a class="nav-item" href="#">
+                    <span class="nav-icon">📡</span>
+                    <span class="nav-text">Telemetry</span>
+                </a>
+                <a class="nav-item" href="#">
+                    <span class="nav-icon">🗺️</span>
+                    <span class="nav-text">Mission Map</span>
+                </a>
+            </nav>
+            
+            <nav class="nav-section">
+                <div class="nav-label">Systems</div>
+                <a class="nav-item" href="#">
+                    <span class="nav-icon">🤖</span>
+                    <span class="nav-text">AI Assistant</span>
+                </a>
+                <a class="nav-item" href="#">
+                    <span class="nav-icon">🔒</span>
+                    <span class="nav-text">Security</span>
+                </a>
+                <a class="nav-item" href="#">
+                    <span class="nav-icon">⚡</span>
+                    <span class="nav-text">Power</span>
+                </a>
+                <a class="nav-item" href="#">
+                    <span class="nav-icon">🌡️</span>
+                    <span class="nav-text">Thermal</span>
+                </a>
+            </nav>
+            
+            <nav class="nav-section">
+                <div class="nav-label">Management</div>
+                <a class="nav-item" href="#">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">Logs</span>
+                </a>
+                <a class="nav-item" href="#">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </nav>
+            
+            <div class="footer">
+                <p>Connected to CanSat-001</p>
+                <p>Latency: 12ms</p>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h2>Flight Command Center</h2>
+                    <p>Real-time telemetry and mission control</p>
+                </div>
+                <div class="header-right">
+                    <div class="status-badge">
+                        <span class="dot"></span>
+                        <span>Online</span>
+                    </div>
+                    <div class="timestamp" id="timestamp"></div>
+                </div>
+            </header>
+            
+            <!-- Stats Grid -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon cyan">📡</div>
+                        <span class="stat-trend up">+2.4%</span>
+                    </div>
+                    <div class="stat-value">98.7%</div>
+                    <div class="stat-label">Signal Strength</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">🔋</div>
+                        <span class="stat-trend down">-0.8%</span>
+                    </div>
+                    <div class="stat-value">84.2%</div>
+                    <div class="stat-label">Battery Level</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon amber">🌡️</div>
+                        <span class="stat-trend up">+1.2°C</span>
+                    </div>
+                    <div class="stat-value">42.8°C</div>
+                    <div class="stat-label">Internal Temp</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon red">⏱️</div>
+                        <span class="stat-trend up">+5m</span>
+                    </div>
+                    <div class="stat-value">2h 34m</div>
+                    <div class="stat-label">Flight Time</div>
+                </div>
+            </section>
+            
+            <!-- Main Grid -->
+            <div class="grid-2">
+                <!-- Telemetry Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>📊</span>
+                            Live Telemetry
+                        </h3>
+                        <div class="card-actions">
+                            <button class="card-btn">Export</button>
+                            <button class="card-btn">History</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="telemetry-grid">
+                            <div class="telemetry-item">
+                                <div class="telemetry-label">Altitude</div>
+                                <div class="telemetry-value" id="altitude">12,450</div>
+                                <div class="telemetry-unit">meters</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="telemetry-label">Speed</div>
+                                <div class="telemetry-value" id="speed">245</div>
+                                <div class="telemetry-unit">km/h</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="telemetry-label">Heading</div>
+                                <div class="telemetry-value" id="heading">127°</div>
+                                <div class="telemetry-unit">degrees</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="telemetry-label">Pressure</div>
+                                <div class="telemetry-value" id="pressure">1013</div>
+                                <div class="telemetry-unit">hPa</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="telemetry-label">Humidity</div>
+                                <div class="telemetry-value" id="humidity">65</div>
+                                <div class="telemetry-unit">%</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="telemetry-label">GPS Lat</div>
+                                <div class="telemetry-value" id="gps-lat">40.712</div>
+                                <div class="telemetry-unit">°N</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="telemetry-label">GPS Lon</div>
+                                <div class="telemetry-value" id="gps-lon">-74.006</div>
+                                <div class="telemetry-unit">°W</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="telemetry-label">Satellites</div>
+                                <div class="telemetry-value" id="satellites">12</div>
+                                <div class="telemetry-unit">lock</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- System Status Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>🔋</span>
+                            System Status
+                        </h3>
+                        <div class="card-actions">
+                            <button class="card-btn">Details</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="gauge-container">
+                            <div class="gauge" style="--value: 84;">
+                                <div class="gauge-value">84%</div>
+                            </div>
+                            <div class="gauge-label">Battery Level</div>
+                        </div>
+                        <div class="alert-list" style="margin-top: 24px;">
+                            <div class="alert-item info">
+                                <span class="alert-icon">ℹ️</span>
+                                <div class="alert-content">
+                                    <div class="alert-title">All Systems Nominal</div>
+                                    <div class="alert-message">CanSat-001 operating within normal parameters</div>
+                                </div>
+                                <div class="alert-time">2 min ago</div>
+                            </div>
+                            <div class="alert-item warning">
+                                <span class="alert-icon">⚠️</span>
+                                <div class="alert-content">
+                                    <div class="alert-title">Temperature Advisory</div>
+                                    <div class="alert-message">Internal temperature approaching upper threshold</div>
+                                </div>
+                                <div class="alert-time">15 min ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map and Mission -->
+            <div class="grid-2">
+                <!-- Map Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>🗺️</span>
+                            Flight Path
+                        </h3>
+                        <div class="card-actions">
+                            <button class="card-btn">3D View</button>
+                            <button class="card-btn">Satellite</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="map-container">
+                            <div class="map-placeholder">
+                                <span class="icon">🗺️</span>
+                                <p>Live Map View</p>
+                                <p style="font-size: 0.8rem; margin-top: 8px;">GPS: 40.7128°N, 74.0060°W</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mission Timeline Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>🚀</span>
+                            Mission Timeline
+                        </h3>
+                        <div class="card-actions">
+                            <button class="card-btn">New Mission</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-marker completed">✓</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Launch Sequence Initiated</div>
+                                    <div class="timeline-time">08:00:00 UTC</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker completed">✓</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Ascent Phase Complete</div>
+                                    <div class="timeline-time">08:15:32 UTC</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker completed">✓</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Data Collection Started</div>
+                                    <div class="timeline-time">08:20:00 UTC</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker">4</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Descent Phase</div>
+                                    <div class="timeline-time">In Progress</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker">5</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Landing & Recovery</div>
+                                    <div class="timeline-time">Pending</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sensors Data Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <span>📈</span>
+                        Sensor Readings
+                    </h3>
+                    <div class="card-actions">
+                        <button class="card-btn">Configure</button>
+                        <button class="card-btn">Export CSV</button>
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Sensor</th>
+                                <th>Value</th>
+                                <th>Unit</th>
+                                <th>Status</th>
+                                <th>Last Update</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BME280 - Pressure</td>
+                                <td>1013.25</td>
+                                <td>hPa</td>
+                                <td><span class="status-indicator online"><span class="dot"></span>Online</span></td>
+                                <td>2s ago</td>
+                            </tr>
+                            <tr>
+                                <td>BME280 - Temperature</td>
+                                <td>22.5</td>
+                                <td>°C</td>
+                                <td><span class="status-indicator online"><span class="dot"></span>Online</span></td>
+                                <td>2s ago</td>
+                            </tr>
+                            <tr>
+                                <td>BME280 - Humidity</td>
+                                <td>65.3</td>
+                                <td>%</td>
+                                <td><span class="status-indicator online"><span class="dot"></span>Online</span></td>
+                                <td>2s ago</td>
+                            </tr>
+                            <tr>
+                                <td>GPS Module</td>
+                                <td>12 Sats</td>
+                                <td>lock</td>
+                                <td><span class="status-indicator online"><span class="dot"></span>Online</span></td>
+                                <td>1s ago</td>
+                            </tr>
+                            <tr>
+                                <td>IMU - Accel</td>
+                                <td>[0.1, 9.8, 0.2]</td>
+                                <td>m/s²</td>
+                                <td><span class="status-indicator online"><span class="dot"></span>Online</span></td>
+                                <td>0.1s ago</td>
+                            </tr>
+                            <tr>
+                                <td>IMU - Gyro</td>
+                                <td>[0.01, 0.02, 0.01]</td>
+                                <td>rad/s</td>
+                                <td><span class="status-indicator online"><span class="dot"></span>Online</span></td>
+                                <td>0.1s ago</td>
+                            </tr>
+                            <tr>
+                                <td>Radiation Sensor</td>
+                                <td>0.12</td>
+                                <td>μSv/h</td>
+                                <td><span class="status-indicator standby"><span class="dot"></span>Standby</span></td>
+                                <td>5s ago</td>
+                            </tr>
+                            <tr>
+                                <td>LIDAR</td>
+                                <td>--</td>
+                                <td>m</td>
+                                <td><span class="status-indicator offline"><span class="dot"></span>Offline</span></td>
+                                <td>--</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short'
+            };
+            document.getElementById('timestamp').textContent = now.toLocaleString('en-US', options);
+        }
+        updateTimestamp();
+        setInterval(updateTimestamp, 1000);
+        
+        // Simulate telemetry updates
+        function simulateTelemetry() {
+            const base = {
+                altitude: 12450,
+                speed: 245,
+                heading: 127,
+                pressure: 1013,
+                humidity: 65,
+                gpsLat: 40.712,
+                gpsLon: -74.006,
+                satellites: 12
+            };
+            
+            function updateValue(id, value, decimals = 0) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.textContent = typeof value === 'number' ? value.toFixed(decimals) : value;
+                }
+            }
+            
+            setInterval(() => {
+                updateValue('altitude', base.altitude + Math.floor(Math.random() * 100 - 50));
+                updateValue('speed', base.speed + Math.floor(Math.random() * 20 - 10));
+                updateValue('heading', (base.heading + Math.floor(Math.random() * 10 - 5) + 360) % 360);
+                updateValue('pressure', base.pressure + (Math.random() * 2 - 1));
+                updateValue('humidity', base.humidity + Math.floor(Math.random() * 10 - 5));
+                updateValue('gps-lat', base.gpsLat + (Math.random() * 0.001 - 0.0005), 4);
+                updateValue('gps-lon', base.gpsLon + (Math.random() * 0.001 - 0.0005), 4);
+            }, 2000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            simulateTelemetry();
+        });
+        
+        // Navigation active state
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

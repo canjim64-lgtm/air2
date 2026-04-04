@@ -2,8 +2,8 @@
 cd /d "%~dp0"
 
 if "%1"=="" (
-    python main.py
+    python launcher.py
 ) else (
-    python main.py %1
+    python launcher.py %1
 )
 pause

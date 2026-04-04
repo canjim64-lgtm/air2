@@ -1,7 +1,8 @@
 #!/bin/bash
 # AirOne Professional v4.0 - Quick Installer
 
-echo "Installing AirOne..."
+echo "Running AirOne Python Installer..."
+echo
 
 # Check Python
 if ! command -v python3 &> /dev/null; then
@@ -9,7 +10,7 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-# Install deps
-pip3 install numpy psutil requests flask pyjwt cryptography pillow
+# Run Python installer
+python3 install.py
 
-echo "Done! Run: python3 main.py"
+echo "Done! Run: python3 launcher.py"
